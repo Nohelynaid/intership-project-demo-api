@@ -20,11 +20,14 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
 
   // since we use vercel, we take care about styles
-  const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
-  SwaggerModule.setup('api/docs', app, document, {
-    customCssUrl: CSS_URL,
-  });
+  const swaggerCss = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
+  const swaggerJs = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui-bundle.js';
+  const swaggerPreset = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui-standalone-preset.js';
 
+  SwaggerModule.setup('api/docs', app, document, {
+    customCssUrl: swaggerCss,
+    customJs: [swaggerJs, swaggerPreset],
+  });
   await app.init();
 
   if (process.env.NODE_ENV !== 'production') {
