@@ -28,12 +28,8 @@ async function bootstrap() {
 
 
   await app.init();
-
-  if (process.env.NODE_ENV !== 'production') {
-    const port = process.env.PORT || 3000;
-    await app.listen(port);
-    console.log(`🚀 NestJS running on http://localhost:${port}/api`);
-  }
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
 }
 
 bootstrap();
