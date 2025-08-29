@@ -20,11 +20,11 @@ async function bootstrap() {
   //   swaggerOptions: { persistAuthorization: true },
   // });
 
-  app.enableCors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: '*',
-  });
+  // app.enableCors({
+  //   origin: '*',
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   allowedHeaders: '*',
+  // });
 
   await app.init();
 
