@@ -8,7 +8,7 @@ const server = express();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
-
+  app.setGlobalPrefix('api');
   const config = new DocumentBuilder()
     .setTitle('Inventory API')
     .setDescription('API documentation for Inventory Management project')
