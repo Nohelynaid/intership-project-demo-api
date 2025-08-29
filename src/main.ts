@@ -12,14 +12,18 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.enableCors({ origin: '*' });
 
-  // Swagger (puedes mostrarlo también en prod)
   const config = new DocumentBuilder()
     .setTitle('Inventory API')
     .setDescription('API docs')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+
+  // since we use vercel, we take care about styles
+  const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+  SwaggerModule.setup('api/docs', app, document, {
+    customCssUrl: CSS_URL,
+  });
 
   await app.init();
 
