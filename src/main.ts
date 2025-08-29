@@ -9,30 +9,30 @@ const server = express();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
 
-  // const config = new DocumentBuilder()
-  //   .setTitle('Inventory API')
-  //   .setDescription('API documentation for Inventory Management project')
-  //   .setVersion('1.0')
-  //   .build();
+  const config = new DocumentBuilder()
+    .setTitle('Inventory API')
+    .setDescription('API documentation for Inventory Management project')
+    .setVersion('1.0')
+    .build();
 
-  // const document = SwaggerModule.createDocument(app, config);
-  // SwaggerModule.setup('/api/docs', app, document, {
-  //   swaggerOptions: { persistAuthorization: true },
-  // });
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('/api/docs', app, document, {
+    swaggerOptions: { persistAuthorization: true },
+  });
 
-  // app.enableCors({
-  //   origin: '*',
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  //   allowedHeaders: '*',
-  // });
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: '*',
+  });
 
   await app.init();
 
-  // if (process.env.NODE_ENV !== 'production') {
-  //   const port = process.env.PORT || 3000;
-  //   await app.listen(port);
-  //   console.log(`🚀 NestJS running on http://localhost:${port}/api`);
-  // }
+  if (process.env.NODE_ENV !== 'production') {
+    const port = process.env.PORT || 3000;
+    await app.listen(port);
+    console.log(`🚀 NestJS running on http://localhost:${port}`);
+  }
 
 }
 
