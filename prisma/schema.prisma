@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model User {
+  id        String       @id @default(uuid())
+  email     String       @unique
+  name      String?
+  createdAt DateTime     @default(now())
+
+  // we define relations
+  ownedInventories Inventory[] @relation("InventoryOwner")
+  writeAccess      InventoryAccess[]
+}
+
+model Inventory {
+  id          String       @id @default(uuid())
+  code        String       @unique
+  name        String
+  description String?
+  image       String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // we define relations
+  owner   User @relation("InventoryOwner", fields: [ownerId], references: [id])
+  ownerId String
+
+  access InventoryAccess[]
+
+  items Item[]
+
+  fields Field[]
+
+  numbering Numbering?
+
+  isPublic Boolean @default(false)
+}
+
+model InventoryAccess {
+  id          String     @id @default(uuid())
+  inventory   Inventory  @relation(fields: [inventoryId], references: [id])
+  inventoryId String
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String
+  canWrite    Boolean    @default(true)
+
+  @@unique([inventoryId, userId])
+}
+
+model Field {
+  id          String     @id @default(uuid())
+  inventory   Inventory  @relation(fields: [inventoryId], references: [id])
+  inventoryId String
+  name        String
+  key         String
+  type        FieldType
+  required    Boolean    @default(false)
+  options     String[]  
+
+  position    Int        @default(0)
+
+  @@unique([inventoryId, key])
+}
+
+enum FieldType {
+  string
+  number
+  date
+  boolean
+  enum
+}
+
+model Numbering {
+  id          String     @id @default(uuid())
+  inventory   Inventory  @relation(fields: [inventoryId], references: [id])
+  inventoryId String     @unique
+  pattern     String     @default("{CODE}-{YYYY}-{SEQ:5}")
+  counter     Int        @default(0)
+}
+
+model Item {
+  id          String     @id @default(uuid())
+  inventory   Inventory  @relation(fields: [inventoryId], references: [id])
+  inventoryId String
+  invNumber   String
+  data        Json
+  createdBy   String?
+  createdAt   DateTime   @default(now())
+
+  @@unique([inventoryId, invNumber])
+}
