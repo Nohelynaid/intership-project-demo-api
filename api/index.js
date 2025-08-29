@@ -1,2 +1,5 @@
-import server from '../dist/main';
-export default server;
+const server = require('../dist/src/main').default;
+
+module.exports = (req, res) => {
+    return server(req, res);
+};
